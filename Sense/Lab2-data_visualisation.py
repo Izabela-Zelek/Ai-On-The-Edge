@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import csv
 import datetime
 
-filename = input("Enter the CSV filename (including .csv extension): ") // 20241015-230559_sensor_data.csv
+filename = input("Enter the CSV filename (including .csv extension): ") #20241015-230559_sensor_data.csv
 
 timestamps = []
 temperatures = []
