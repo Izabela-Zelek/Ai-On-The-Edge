@@ -6,23 +6,23 @@ sense = SenseHat()
 TEMP_THRESHOLD = 25.0 # degrees Celsius
 HUMIDITY_THRESHOLD = 30.0 # percentage
 MOTION_THRESHOLD = 1.0 # acceleration threshold
-TEMP_OFFSET = -5.0  # Adjust based on calibration
+TEMP_OFFSET = -10.0  # Adjust based on calibration
 TEMP_LOWER = 20.0
 TEMP_UPPER = 25.0
-HUMIDITY_LOWER = 30.0
+HUMIDITY_LOWER = 25.0
 HUMIDITY_UPPER = 60.0
 
 def check_temperature():
     temp = sense.get_temperature()
     temp = round(temp, 1)
 
-    if temp > 28.0:
+    if temp > 28.0 + TEMP_OFFSET:
         sense.show_message("Warning: Hot!", text_colour=[255, 0, 0])
         # Log warning to a file
         with open("warnings.log", "a") as log_file:
             log_file.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - High temperature: {temp}°C\n")
         print("Warning logged.")
-    elif temp > TEMP_THRESHOLD:
+    elif temp > TEMP_THRESHOLD + TEMP_OFFSET:
         sense.show_message("Hot!", text_colour=[255, 0, 0])
         print("Temperature Alert: Hot!")
     else:
@@ -64,7 +64,7 @@ def check_comfort_level():
     temp = round(temp, 1)
     humidity = round(humidity, 1)
 
-    is_temp_comfortable = TEMP_LOWER <= temp <= TEMP_UPPER
+    is_temp_comfortable = TEMP_LOWER <= (temp + TEMP_OFFSET )<= TEMP_UPPER 
     is_humidity_comfortable = HUMIDITY_LOWER <= humidity <= HUMIDITY_UPPER
     if is_temp_comfortable and is_humidity_comfortable:
         sense.show_message("Comfortable", text_colour=[0, 255, 0])  # Green text
